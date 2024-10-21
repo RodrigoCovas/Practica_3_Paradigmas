@@ -3,10 +3,10 @@
     public class Taxi
     {
         private static Taxi? _instance; // Singleton instance
-        private int _life;
-        private double _speed;
-        private int _lastLifeValue;
-        private double _lastSpeedValue;
+        public int _life { get; private set; }
+        public double _speed { get; private set; }
+        public int _lastLifeValue { get; private set; }
+        public double _lastSpeedValue { get; private set; }
 
         private Taxi()
         {
@@ -34,8 +34,17 @@
             _lastLifeValue = _life;
             _lastSpeedValue = _speed;
 
-            _life -= obstacle.Damage;
+            if (_life >= obstacle.Damage)
+            {
+                _life -= obstacle.Damage;
+            }
+            else
+            {
+                _life = 0;
+            }
+
             _speed *= obstacle.SpeedMultiplier;
+            _speed = Math.Round(_speed, 2); // Round to 2 decimal places
 
             Console.WriteLine(ToString());
         }
