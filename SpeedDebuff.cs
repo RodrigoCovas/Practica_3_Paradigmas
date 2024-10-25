@@ -1,13 +1,7 @@
 ﻿namespace P3
 {
-    public class SpeedDebuff : IObstacle
+    public class SpeedDebuff : Obstacle
     {
-        public bool PursueTaxi { get; }
-        public bool isSolid { get; }
-        public int Damage { get; }
-        public double SpeedMultiplier { get; }
-        public int EffectDuration { get; }
-
         public SpeedDebuff()
         {
             PursueTaxi = false;
@@ -15,11 +9,6 @@
             Damage = 0;
             SpeedMultiplier = 0.5;
             EffectDuration = 30; // Seconds
-        }
-
-        public void ApplyEffect(Taxi taxi)
-        {
-            taxi.ApplyObstacle(this);
         }
     }
 }

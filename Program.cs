@@ -3,18 +3,16 @@
     internal class Program
     {
         static Dictionary<ConsoleKey, ObstacleFactory> factories = new Dictionary<ConsoleKey, ObstacleFactory>
-            {
-                { ConsoleKey.A , new PoliceCarFactory() },
-                { ConsoleKey.S , new ConstructionFenceFactory() },
-                { ConsoleKey.D , new SpeedDebuffFactory() }
-            };
+                {
+                    { ConsoleKey.A , new PoliceCarFactory() },
+                    { ConsoleKey.S , new ConstructionFenceFactory() },
+                    { ConsoleKey.D , new SpeedDebuffFactory() }
+                };
 
         public static void Main(string[] args)
         {
             Taxi taxi = Taxi.Instance;
             Console.WriteLine("Press a key to create an obstacle:\nA -> Police Car\nS -> Construction Fence\nD -> Speed Debuff");
-
-            double originalSpeed = taxi._speed;
 
             while (true)
             {
@@ -30,10 +28,8 @@
                     if (factories.ContainsKey(key))
                     {
                         ObstacleFactory factory = factories[key];
-                        IObstacle obstacle = factory.CreateObstacle();
+                        Obstacle obstacle = factory.CreateObstacle();
                         obstacle.ApplyEffect(taxi);
-
-                        Timer timer = new Timer(state => taxi.RestoreSpeed(originalSpeed), null, obstacle.EffectDuration*1000, Timeout.Infinite); // Milliseconds
                     }
                     else if (key == ConsoleKey.Escape)
                     {

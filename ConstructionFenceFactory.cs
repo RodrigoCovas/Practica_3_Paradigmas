@@ -2,7 +2,7 @@
 {
     public class ConstructionFenceFactory : ObstacleFactory
     {
-        public override IObstacle CreateObstacle()
+        public override Obstacle CreateObstacle()
         {
             return new ConstructionFence();
         }

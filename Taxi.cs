@@ -8,12 +8,20 @@
         public int _lastLifeValue { get; private set; }
         public double _lastSpeedValue { get; private set; }
 
+        private List<Timer> _timers;
+
+        private List<double> _speedMultipliers;
+
+        private readonly double _initialSpeed = 1;
+
         private Taxi()
         {
             _life = 100;
-            _speed = 1;
+            _speed = _initialSpeed;
             _lastLifeValue = _life;
             _lastSpeedValue = _speed;
+            _timers = new List<Timer>();
+            _speedMultipliers = new List<double>();
         }
 
         public static Taxi Instance
@@ -29,7 +37,7 @@
             }
         }
 
-        public void ApplyObstacle(IObstacle obstacle)
+        public void ApplyObstacle(Obstacle obstacle)
         {
             _lastLifeValue = _life;
             _lastSpeedValue = _speed;
@@ -44,25 +52,44 @@
             }
 
             _speed *= obstacle.SpeedMultiplier;
+
+            Timer timer = new Timer(RestoreSpeed, (object)obstacle.SpeedMultiplier, obstacle.EffectDuration * 1000, Timeout.Infinite);
+            _timers.Add(timer);
+            _speedMultipliers.Add(obstacle.SpeedMultiplier);
+
             _speed = Math.Round(_speed, 2); // Round to 2 decimal places
 
             Console.WriteLine(ToString());
         }
 
-        public void RestoreSpeed(double originalSpeed)
+        public void RestoreSpeed(object? multiplier)
         {
-            _lastSpeedValue = _speed;
+            if (multiplier is double speedMultiplier)
+            {
+                _speedMultipliers.Remove(speedMultiplier);
 
-            _speed = originalSpeed;
+                _lastSpeedValue = _speed;
 
-            Console.WriteLine(ToString());
+                if (_speedMultipliers.Count == 0)
+                {
+                    _speed = _initialSpeed;
+                }
+                else
+                {
+                    _speed = _initialSpeed;
+                    foreach (var i in _speedMultipliers)
+                    {
+                        _speed *= i;
+                    }
+                }
+
+                Console.WriteLine(ToString());
+            }
         }
 
         public override string ToString()
         {
             return $"Life: {_lastLifeValue} -> {_life}, Speed: {_lastSpeedValue} -> {_speed}";
         }
-
-
     }
 }

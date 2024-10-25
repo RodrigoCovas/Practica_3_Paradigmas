@@ -2,7 +2,7 @@
 {
     public class PoliceCarFactory : ObstacleFactory
     {
-        public override IObstacle CreateObstacle()
+        public override Obstacle CreateObstacle()
         {
             return new PoliceCar();
         }

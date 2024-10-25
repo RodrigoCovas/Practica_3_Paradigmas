@@ -2,6 +2,6 @@
 {
     public abstract class ObstacleFactory
     {
-        public abstract IObstacle CreateObstacle();
+        public abstract Obstacle CreateObstacle();
     }
 }
